@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de tareas Basado en el estado</title>
+</head>
+
+<body>
+    <h1>Interfaz Usuario Basado en el Estado</h1>
+    <form id="tareas-form">
+        <input type="text" id="tareas-item" placeholder="Tareas por Hacer">
+        <input type="submit" value="Agregar Tarea">
+    </form>
+    <h2>Lista de tareas a Realizar</h2>
+    <ol id="tareas-lista"></ol>
+
+    <script>
+        const d= document;
+
+        //Es Estado (Variables). Es un objeto que dentro tiene un arreglo de tareas.
+        const state ={
+
+            tareasLista:[]
+
+        }
+
+        // Template UI - Componente mediante una función - (arrow funtion).
+        const template = ()=>{
+            if(state.tareasLista.length < 1){
+                return `<p>Lista sin tareas</p>`; //string HTML
+            }
+
+            let tareas = state.tareasLista.map(item => `<li>${item}</li>`); //.map metodo que apartir de un arreglo me genera un nuevo arreglo
+            return tareas;
+
+        }
+
+        //Pintando de la interfaz - Renderizado - es una función.
+
+        const render = () => {
+            console.log(state);
+            const $list = d.getElementById("tareas-lista");
+            if(!$list) return;
+            $list.innerHTML = template();
+        
+        }
+
+        d.addEventListener("DOMContentLoaded", render);
+
+        //Manejador de Eventos
+        d.addEventListener("submit", e => {
+            if (!e.target.matches("#tareas-form")) return false;
+
+            e.preventDefault(); //controlo el evento por defecto del navegador.
+            
+            //Actualizamos el State y la interfaz de usuario.
+
+            const $item = d.getElementById("tareas-item") // Input del formulario
+            if(!$item) return;
+
+            state.tareasLista.push($item.value);
+            render();
+
+            $item.value="";
+            $item.focus;
+
+        })
+
+    </script>
+
+
+</body>
+</html>
